@@ -49,6 +49,7 @@ int main(int argc, char*argv[]){
 
         if (strcmp(argv[1], "cache") == 0){
             FILE* f = fopen("./access_cache_hit.csv", "w");
+            fprintf(f, "time");
 
             for(int i = 0; i < 10000; i++){
                 fprintf(f, "%d\n",measure_cache_hit());
@@ -59,6 +60,7 @@ int main(int argc, char*argv[]){
         else{
             if(strcmp(argv[1], "single")== 0){
                 FILE* f = fopen("./access_single.csv", "w");
+                fprintf(f, "time");
             
                 for(int i = 0; i < 10000; i++){
                     int *a = malloc(sizeof(int));
