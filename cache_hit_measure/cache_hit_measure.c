@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdio.h>
-#include <cpuid.h>
 #include <string.h>
 
 int rdtsc(){
