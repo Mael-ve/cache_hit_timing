@@ -1,3 +1,4 @@
-./cache_hit_measure/a.out
-./same_bank_measure/a.out
+cache_hit_measure/a.out
+same_bank_measure/a.out
+same_bank_measure/access_two_value.csv
 
