@@ -7,7 +7,7 @@ In blue are the 10 000 values of time to access a pointer in the cache. The poin
 
 # same_bank_measure
 
-![histogram of measure of time to access two differents value in a tab](./images/same_bank_plot_v1.png)
+![histogram of measure of time to access two differents value in a tab](./images/same_bank_plot.png)
 
 The code access to two values in a tab and measure the time to switch between these two values.
 This histogram shows the mean value of 20 measures of time to switch between two values. 
