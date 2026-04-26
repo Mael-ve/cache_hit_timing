@@ -1,6 +1,6 @@
 all:
 	gcc same_bank_measure.c
-	./a.out
+	taskset -c 1 ./a.out
 	python3 stat.py
 
 compil:

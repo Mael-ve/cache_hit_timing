@@ -3,14 +3,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#define LENGTH_TAB 1000
+#define LENGTH_TAB 500000
 
 int rdtsc(){
     // Call rdtsc assembly command with a barrier assure by the command cpuid
     // Return the actual number of cpu cycle of the machine code
     int time;
     asm("xor %0, %0\n\t"
-        "cpuid\n\t"
+        // "cpuid\n\t"
+        "mfence\n\t"
         "rdtsc\n\t"
         "add %0, %%edx"
         : "=r" (time) 
@@ -23,13 +24,7 @@ int rdtsc(){
 int measure_access_two_values(int * tab, int i, int j){
     // measure the time to access the value of tab[i] and the value of tab[j]
     // one after another, and flush the two value after
-    int clock1 = rdtsc();
-
-    tab[i] = tab[i] +1;
-
-    tab[j] = tab[j] +1;
-    int clock2 = rdtsc();
-
+    
     void* value1 = &tab[i];
     void* value2 = &tab[j];
     asm("clflush 0(%0)\n\t"
@@ -37,6 +32,18 @@ int measure_access_two_values(int * tab, int i, int j){
         ::"r" (value1), "r" (value2)
         : "rax"
     );
+
+    
+    int clock1, clock2;
+
+    clock1 = rdtsc();
+
+    tab[i] = tab[i] +1;
+
+    tab[j] = tab[j] +1;
+
+    clock2 = rdtsc();
+
 
     return clock2-clock1;
 }
@@ -52,13 +59,12 @@ int main(){
 
     FILE * f = fopen("./access_two_value.csv", "w");
 
-    for(int i = 0; i < LENGTH_TAB; i++){
-        for(int j = 0; j < LENGTH_TAB; j++){
-            for(int r = 0; r < 20; r ++){
-                fprintf(f, "%d, ", measure_access_two_values(tab, i*4096+1, j*4096+1));
-            }
-            fprintf(f, "%d\n", measure_access_two_values(tab, i*4096+1, j*4096+1));
+    for(int j = 0; j < LENGTH_TAB; j++){
+        
+        for(int r = 0; r < 100; r ++){
+            fprintf(f, "%d, ", measure_access_two_values(tab, 0, j*4096+1));
         }
+        fprintf(f, "%d\n", measure_access_two_values(tab, 0, j*4096+1));
     }
 
     free(tab);
